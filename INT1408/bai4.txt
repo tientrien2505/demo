@@ -1,0 +1,55 @@
+﻿<h1>Bài 4</h1>
+<p>Bạn gặp phải nhiều tình huống mà cần truyền một số thông tin từ trình duyệt của bạn tới Web Server và sau đó tới chương trình backend của bạn. Trình duyệt sử dụng hai phương thức để truyền thông tin này tới Web Server. Đó là phương thức GET và phương thức POST.</p>
+<h2>Phương thức GET</h2>
+<p>Phương thức GET gửi thông tin người dùng đã được mã hóa phụ thêm tới yêu cầu trang. Trang này và thông tin đã được mã hóa được phân biệt bởi ký tự ? như sau:
+
+    http://www.test.com/hello?key1=value1&key2=value2
+
+    Phương thức GET là phương thức mặc định để truyền thông tin từ trình duyệt tới Web Server và nó tạo ra một chuỗi dài mà xuất hiện trong Location:box của trình duyệt. Không bao giờ sử dụng phương thức GET nếu bạn truyền tới Server thông tin password hoặc thông tin nhạy cảm khác. Phương thức GET có kích cỡ giới hạn: chỉ có 1024 ký tự trong một chuỗi yêu cầu.
+
+    Thông tin này được truyền bởi sử dụng QUERY_STRING Header và sẽ có thể truy cập thông qua biến môi trường QUERY_STRING và Servlet xử lý kiểu yêu cầu này bởi sử dụng phương thức doGet().</p>
+<h2>Phương thức POST</h2>
+<p>Một phương thức đáng tin cậy hơn để truyền thông tin tới chương trình backend là phương thức POST. Nó gói thông tin theo cách giống như phương thức GET, nhưng thay vì gửi nó như là một chuỗi text sau một ký tự ? trong URL, nó gửi thông tin như là một thông báo riêng biệt. Thông báo này tới chương trình backend trong form của input chuẩn mà bạn có thể parse và sử dụng cho tiến trình xử lý của bạn. Servlet xử lý kiểu yêu cầu này bởi sử dụng phương thức doPost().</p>
+<div id='editor' style='height:500px'>
+// Import required java libraries
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+// Extend HttpServlet class
+public class HelloForm extends HttpServlet {
+ 
+  // Method to handle GET method request.
+  public void doGet(HttpServletRequest request,
+                    HttpServletResponse response)
+            throws ServletException, IOException
+  {
+      // Set response content type
+      response.setContentType("text/html");
+
+      PrintWriter out = response.getWriter();
+	  String title = "Using GET Method to Read Form Data";
+      String docType =
+      "<!doctype html public \"-//w3c//dtd html 4.0 " +
+      "transitional//en\">\n";
+      out.println(docType +
+                "<html>\n" +
+                "<head><title>" + title + "</title></head>\n" +
+                "<body bgcolor=\"#f0f0f0\">\n" +
+                "<h1 align=\"center\">" + title + "</h1>\n" +
+                "<ul>\n" +
+                "  <li><b>First Name</b>: "
+                + request.getParameter("first_name") + "\n" +
+                "  <li><b>Last Name</b>: "
+                + request.getParameter("last_name") + "\n" +
+                "</ul>\n" +
+                "</body></html>");
+  }
+  // Method to handle POST method request.
+  public void doPost(HttpServletRequest request,
+                     HttpServletResponse response)
+      throws ServletException, IOException {
+     doGet(request, response);
+  }
+}
+</div>
